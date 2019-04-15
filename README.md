@@ -47,6 +47,6 @@ SUCCESS Proxy: {'ip': '31.192.138.224', 'port': '53281'} User Agent: Mozilla/5.0
 ```
 ## Remark
 
-The module tries `x=20` proxies and then interrupts if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time. 
+The module randomly tries a maximum of `x=20` proxies and then interrupts if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time. 
 
 
