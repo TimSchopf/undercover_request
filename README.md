@@ -1,5 +1,5 @@
 # 'undercover_request' Module
-Returns the request.Response object of an url and uses a random proxy and a random user agent for anonymization
+Returns an instance of requests.Response of an url and uses a random proxy and a random user agent for anonymization
 
 ## Install
 The `undercover_request` module can be installed from GitHub using `pip`:
