@@ -1,8 +1,8 @@
-# 'undercover_request' Package
+# 'undercover_request' Module
 Returns the request object of an url and uses a random proxy and a random user agent for anonymization
 
 ## Install
-The `undercover_request` package can be installed from GitHub using `pip`:
+The `undercover_request` module can be installed from GitHub using `pip`:
 
 `pip install git+https://github.com/TimSchopf/undercover_request`
 
