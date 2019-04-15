@@ -13,7 +13,7 @@ import requests
 """
 
 # returns a request object from given url with random user agent and random proxy
-def request(url:str,request_type='get',params={},timeout=0) -> requests.models.Response:
+def request(url:str,request_type='get',params={},timeout=1) -> requests.models.Response:
     
     # check parameter requirements
     if request_type != 'get' and request_type != 'post':
@@ -23,7 +23,7 @@ def request(url:str,request_type='get',params={},timeout=0) -> requests.models.R
         raise ValueError("post_params must be of type dict()")
         
     if not isinstance(timeout, int):
-        raise ValueError("timeout must be of type int")
+        raise ValueError("timeout must be of type 'int")
     
     #  disable ANY annoying exception with a fallback to default user agent if anything goes wrong
     ua = UserAgent(fallback = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-HK) AppleWebKit/533.18.1 (KHTML, like Gecko) Version/5.0.2 Safari/533.18.5')
@@ -63,7 +63,7 @@ def request(url:str,request_type='get',params={},timeout=0) -> requests.models.R
     # try if proxy server is running, if not try other random proxy and user agent, try maximum x times then exit loop
     proxy_is_good = False
     i = 0
-    x = 10
+    x = 20
     while not proxy_is_good:
     
         # get dict for random proxy 
@@ -86,7 +86,7 @@ def request(url:str,request_type='get',params={},timeout=0) -> requests.models.R
         except:
             print('ERROR','Proxy:',random_proxy,'User Agent:',user_agent)
             if i == x:
-                print('All',i,'proxies are not reachable')
+                print('All',i,'proxies are not reachable. Try again later')
                 break
             i += 1
         # if everything goes right, end loop and return request object
