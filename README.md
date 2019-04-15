@@ -45,5 +45,8 @@ get proxy list
 try proxies
 SUCCESS Proxy: {'ip': '31.192.138.224', 'port': '53281'} User Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36
 ```
+## Remark
+
+The module tries `x` proxies and then interrupts if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time. 
 
 
