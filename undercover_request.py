@@ -87,6 +87,7 @@ def request(url:str,request_type='get',params={},timeout=1) -> requests.models.R
             print('ERROR','Proxy:',random_proxy,'User Agent:',user_agent)
             if i == x:
                 print('All',i,'proxies are not reachable. Try again later')
+                req = None
                 break
             i += 1
         # if everything goes right, end loop and return request object
