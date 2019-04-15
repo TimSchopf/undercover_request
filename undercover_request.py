@@ -3,15 +3,27 @@ from fake_useragent import UserAgent
 import random
 import requests
 
+"""
+
+@param url: the url string from which the request object is wanted
+@param request_type: get or post request
+@param params: parameters sent to the url
+@param timeout: waiting for a response after a given number of seconds 
+@return: returns a requests.Response object from given url with random user agent and random proxy
+"""
+
 # returns a request object from given url with random user agent and random proxy
-def request(url:str,request_type='get',post_params={}) -> requests.models.Response:
+def request(url:str,request_type='get',params={},timeout=0) -> requests.models.Response:
     
     # check parameter requirements
     if request_type != 'get' and request_type != 'post':
         raise ValueError("request_type must be 'get' or 'post' of type str")
         
-    if type(post_params) is not dict:
+    if type(params) is not dict:
         raise ValueError("post_params must be of type dict()")
+        
+    if not isinstance(timeout, int):
+        raise ValueError("timeout must be of type int")
     
     #  disable ANY annoying exception with a fallback to default user agent if anything goes wrong
     ua = UserAgent(fallback = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-HK) AppleWebKit/533.18.1 (KHTML, like Gecko) Version/5.0.2 Safari/533.18.5')
@@ -64,9 +76,9 @@ def request(url:str,request_type='get',post_params={}) -> requests.models.Respon
         # try to get request object from url with random user agent and random proxy
         try:
             if request_type == 'get':
-                req = requests.get(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=1)
+                req = requests.get(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
             elif request_type == 'post':
-                req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=post_params,timeout=1)
+                req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
             else:
                 raise ValueError("request_type must be 'get' or 'post' of type str")
                 
