@@ -12,11 +12,11 @@ The `undercover_request` module can be installed from GitHub using `pip`:
 import undercover_request
 ```
 
-@param url: the url string from which the request object is wanted  
-@param request_type: get or post request  
-@param params: parameters sent to the url  
-@param timeout: waiting for a response after a given number of seconds   
-@return: returns a requests.Response object from given url with random user agent and random proxy  
+@param url: the url from which the request object is wanted  (type str)
+@param request_type: 'get' or 'post' request (type str)
+@param params: parameters sent to the url (type dict())
+@param timeout: waiting for a response after a given number of seconds (type int)
+@return: returns a requests.Response instance from given url with random user agent and random proxy 
 
 #### Example
 
