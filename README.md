@@ -17,6 +17,7 @@ import undercover_request
 @param params: parameters sent to the url (type dict())  
 @param json: parameters sent to the url, parsed to json (type dict())  
 @param timeout: function is waiting for a response for a given number of seconds (type int)   
+@param print_status: if True print status updates (boolean)  
 @return: returns a requests.Response instance from given url with random user agent and random proxy   
 
 #### Example
