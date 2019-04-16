@@ -44,7 +44,7 @@ Out:
 update user agent database
 get proxy list
 try proxies
-SUCCESS Proxy: {'ip': '31.192.138.224', 'port': '53281'} User Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36
+SUCCESS [Number of attempts: 2] Proxy: {'ip': '167.99.7.198', 'port': '8080'} User Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.517 Safari/537.36
 ```
 ## Remark
 
