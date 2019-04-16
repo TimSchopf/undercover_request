@@ -9,11 +9,12 @@ import requests
 @param params: parameters sent to the url (type dict())
 @param json: parameters sent to the url, parsed to json (type dict())
 @param timeout: function is waiting for a response for a given number of seconds (type int)
+@param print_status: if True print status updates (boolean) 
 @return: returns a requests.Response instance from given url, fetched with random user agent and random proxy
 """
 
 # returns a request object from given url with random user agent and random proxy
-def request(url:str,request_type:str,params={},json={},timeout=1) -> requests.models.Response:
+def request(url:str,request_type:str,params={},json={},timeout=1,print_status=True) -> requests.models.Response:
     
     jsn=False
     para=False
@@ -43,13 +44,15 @@ def request(url:str,request_type:str,params={},json={},timeout=1) -> requests.mo
 
     # update saved database of user agents
     # fake_useragent stores collected data at os temp dir
-    print('update user agent database')
+    if print_status:
+        print('update user agent database')
     try: 
         ua.update()
     except:
         print('user agent database update failed')
     
-    print('get proxy list')
+    if print_status:
+        print('get proxy list')
     # will contain proxies [ip, port]
     proxies = []
 
@@ -72,7 +75,8 @@ def request(url:str,request_type:str,params={},json={},timeout=1) -> requests.mo
     def random_proxy_idx():
         return random.randint(0, len(proxies) - 1)
     
-    print('try proxies')
+    if print_status:
+        print('try proxies')
     # try if proxy server is running, if not try other random proxy and user agent, try maximum x times then exit loop
     proxy_is_good = False
     i = 0
@@ -118,5 +122,6 @@ def request(url:str,request_type:str,params={},json={},timeout=1) -> requests.mo
         else:
             proxy_is_good = True
             i+=1
-            print('SUCCESS','[Number of attempts: '+str(i)+']','Proxy:',random_proxy,'User Agent:',user_agent)
+            if print_status:
+                print('SUCCESS','[Number of attempts: '+str(i)+']','Proxy:',random_proxy,'User Agent:',user_agent)
     return req
