@@ -15,7 +15,8 @@ import undercover_request
 @param url: the url from which the request object is wanted  (type str)  
 @param request_type: 'get' or 'post' request (type str)  
 @param params: parameters sent to the url (type dict())  
-@param timeout: waiting for a response after a given number of seconds (type int)  
+@param json: parameters sent to the url, parsed to json (type dict())  
+@param timeout: function is waiting for a response for a given number of seconds (type int)   
 @return: returns a requests.Response instance from given url with random user agent and random proxy   
 
 #### Example
@@ -47,6 +48,8 @@ SUCCESS Proxy: {'ip': '31.192.138.224', 'port': '53281'} User Agent: Mozilla/5.0
 ```
 ## Remark
 
-The module randomly tries a maximum of `x=20` proxies and then interrupts if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time. 
+`proxylist = number of proxies on https://www.sslproxies.org/`  
+
+The module randomly tries a maximum of `x=len(proxylist)` proxies and then interrupts if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time. 
 
 
