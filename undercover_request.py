@@ -4,23 +4,36 @@ import random
 import requests
 
 """
-
-@param url: the url string from which the request object is wanted
-@param request_type: get or post request
-@param params: parameters sent to the url
-@param timeout: waiting for a response after a given number of seconds 
-@return: returns a requests.Response object from given url with random user agent and random proxy
+@param url: the url string from which the request object is wanted (type str)
+@param request_type: get or post request (type str)
+@param params: parameters sent to the url (type dict())
+@param json: parameters sent to the url, parsed to json (type dict())
+@param timeout: function is waiting for a response for a given number of seconds (type int)
+@return: returns a requests.Response instance from given url, fetched with random user agent and random proxy
 """
 
 # returns a request object from given url with random user agent and random proxy
-def request(url:str,request_type='get',params={},timeout=1) -> requests.models.Response:
+def request(url:str,request_type:str,params={},json={},timeout=1) -> requests.models.Response:
+    
+    jsn=False
+    para=False
+    if (len(json)>0 and len(params)==0):
+        jsn=True
+    elif (len(json)==0 and len(params)>0):
+        para=True
+    elif (len(json)>0 and len(params)>0):
+        raise ValueError("use either 'params' or 'json', not both at the same time")
+        
     
     # check parameter requirements
     if request_type != 'get' and request_type != 'post':
         raise ValueError("request_type must be 'get' or 'post' of type str")
         
     if type(params) is not dict:
-        raise ValueError("post_params must be of type dict()")
+        raise ValueError("params must be of type dict()")
+        
+    if type(json) is not dict:
+        raise ValueError("json must be of type dict()")    
         
     if not isinstance(timeout, int):
         raise ValueError("timeout must be of type 'int")
@@ -63,11 +76,13 @@ def request(url:str,request_type='get',params={},timeout=1) -> requests.models.R
     # try if proxy server is running, if not try other random proxy and user agent, try maximum x times then exit loop
     proxy_is_good = False
     i = 0
-    x = 20
+    x = len(proxies)-1
     while not proxy_is_good:
     
-        # get dict for random proxy 
-        random_proxy = proxies[random_proxy_idx()]
+        # get dict for random proxy and delete the used proxy from proxylist (so no proxy is used twice)
+        delete_item_idx = random_proxy_idx()
+        proxies.pop(delete_item_idx)
+        random_proxy = proxies[delete_item_idx]
         random_proxy_dict = {'http': 'http://' + random_proxy['ip'] + ':' + random_proxy['port'],
                         'https': 'https://' + random_proxy['ip'] + ':' + random_proxy['port']}
         # select random user agent
@@ -76,15 +91,24 @@ def request(url:str,request_type='get',params={},timeout=1) -> requests.models.R
         # try to get request object from url with random user agent and random proxy
         try:
             if request_type == 'get':
-                req = requests.get(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
+                if para:
+                    req = requests.get(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
+                else:
+                    req = requests.get(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
             elif request_type == 'post':
-                req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
+                if para:
+                    req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
+                elif jsn:
+                    req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,json=json,timeout=timeout)
+                else:
+                    req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
+                    
             else:
                 raise ValueError("request_type must be 'get' or 'post' of type str")
                 
         # if anything goes wrong try again with differnt user agent and proxy
         except:
-            print('ERROR','Proxy:',random_proxy,'User Agent:',user_agent)
+            #print('ERROR','Proxy:',random_proxy,'User Agent:',user_agent)
             if i == x:
                 print('All',i,'proxies are not reachable. Try again later')
                 req = None
@@ -93,5 +117,6 @@ def request(url:str,request_type='get',params={},timeout=1) -> requests.models.R
         # if everything goes right, end loop and return request object
         else:
             proxy_is_good = True
-            print('SUCCESS','Proxy:',random_proxy,'User Agent:',user_agent)
+            i+=1
+            print('SUCCESS','[Number of attempts: '+str(i)+']','Proxy:',random_proxy,'User Agent:',user_agent)
     return req
