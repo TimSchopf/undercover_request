@@ -111,7 +111,7 @@ def request(url:str,request_type:str,data={},params={},json={},files={},timeout=
                 req = requests.options(url=url,headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
             
             else:
-                raise ValueError("request_type must be 'get' or 'post' of type str")
+                raise ValueError("request_type must be 'get','post','put','delete','head' or 'options' of type str")
                 
         # if anything goes wrong try again with differnt user agent and proxy
         except:
