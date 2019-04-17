@@ -25,6 +25,9 @@ def request(url:str,request_type:str,data={},params={},json={},files={},timeout=
     if type(params) is not dict:
         raise ValueError("params must be of type dict()")
         
+    if type(data) is not dict:
+        raise ValueError("data must be of type dict()")
+        
     if type(json) is not dict:
         raise ValueError("json must be of type dict()")    
         
