@@ -28,7 +28,7 @@ import undercover_request
 ```python
 In[1]:
 
-params = {
+parameter = {
     'P_QTE_CODE': 'ENG',
     'P_QTE_PGM_CODE': '7500',
     'P_LAST_NAME': 'smith',
@@ -41,7 +41,7 @@ params = {
     'Z_ACTION': 'Find'
 }
 
-response = undercover_request.request('http://www2.dca.ca.gov/pls/wllpub/WLLQRYNA$LCEV2.ActionQuery', request_type='post', params=params,timeout=1)
+response = undercover_request.request('http://www2.dca.ca.gov/pls/wllpub/WLLQRYNA$LCEV2.ActionQuery', request_type='post', data=parameter,timeout=1)
 
 
 Out:
