@@ -19,7 +19,7 @@ import undercover_request
 @param json: parameters sent to the url per post request,internally parsed to json (type dict())  
 @param files:  multipart-encoded file sent to the url per post request (type file object)  
 @param timeout: function is waiting for a response for a given number of seconds (type int)  
-@param print_status: if True print status updates (type bool)   
+@param print_status: if False hide status updates (type bool)   
 @return: returns a requests.Response instance from given url, fetched with random user agent and random proxy    
  
 
