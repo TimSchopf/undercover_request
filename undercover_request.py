@@ -5,30 +5,22 @@ import requests
 
 """
 @param url: the url string from which the request object is wanted (type str)
-@param request_type: get or post request (type str)
-@param params: parameters sent to the url (type dict())
-@param json: parameters sent to the url, parsed to json (type dict())
+@param request_type: get, post, put, delete, head or options request (type str)
+@param data: data sent to url per post or put request (type dict())
+@param params: parameters added to the url query string per get request (type dict())
+@param json: parameters sent to the url per post request,internally parsed to json (type dict())
+@param files:  multipart-encoded file sent to the url per post request (type file object)
 @param timeout: function is waiting for a response for a given number of seconds (type int)
-@param print_status: if True print status updates (boolean) 
+@param print_status: if True print status updates (type bool) 
 @return: returns a requests.Response instance from given url, fetched with random user agent and random proxy
 """
 
 # returns a request object from given url with random user agent and random proxy
-def request(url:str,request_type:str,params={},json={},timeout=1,print_status=True) -> requests.models.Response:
-    
-    jsn=False
-    para=False
-    if (len(json)>0 and len(params)==0):
-        jsn=True
-    elif (len(json)==0 and len(params)>0):
-        para=True
-    elif (len(json)>0 and len(params)>0):
-        raise ValueError("use either 'params' or 'json', not both at the same time")
-        
-    
+def request(url:str,request_type:str,data={},params={},json={},files={},timeout=1,print_status=True) -> requests.models.Response:
+       
     # check parameter requirements
-    if request_type != 'get' and request_type != 'post':
-        raise ValueError("request_type must be 'get' or 'post' of type str")
+    if request_type != 'get' and request_type != 'post' and request_type != 'put' and request_type != 'delete' and request_type != 'head' and request_type != 'options':
+        raise ValueError("request_type must be 'get','post','put','delete','head' or 'options' of type str")
         
     if type(params) is not dict:
         raise ValueError("params must be of type dict()")
@@ -37,7 +29,10 @@ def request(url:str,request_type:str,params={},json={},timeout=1,print_status=Tr
         raise ValueError("json must be of type dict()")    
         
     if not isinstance(timeout, int):
-        raise ValueError("timeout must be of type 'int")
+        raise ValueError("'timeout' must be of type int")
+        
+    if not isinstance(print_status, bool):
+        raise ValueError("'print_status' must be of type bool")
     
     #  disable ANY annoying exception with a fallback to default user agent if anything goes wrong
     ua = UserAgent(fallback = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-HK) AppleWebKit/533.18.1 (KHTML, like Gecko) Version/5.0.2 Safari/533.18.5')
@@ -85,8 +80,8 @@ def request(url:str,request_type:str,params={},json={},timeout=1,print_status=Tr
     
         # get dict for random proxy and delete the used proxy from proxylist (so no proxy is used twice)
         delete_item_idx = random_proxy_idx()
-        proxies.pop(delete_item_idx)
         random_proxy = proxies[delete_item_idx]
+        proxies.pop(delete_item_idx)
         random_proxy_dict = {'http': 'http://' + random_proxy['ip'] + ':' + random_proxy['port'],
                         'https': 'https://' + random_proxy['ip'] + ':' + random_proxy['port']}
         # select random user agent
@@ -95,18 +90,23 @@ def request(url:str,request_type:str,params={},json={},timeout=1,print_status=Tr
         # try to get request object from url with random user agent and random proxy
         try:
             if request_type == 'get':
-                if para:
-                    req = requests.get(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
-                else:
-                    req = requests.get(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
+                req = requests.get(url=url,headers={'user-agent': user_agent},proxies=random_proxy_dict,params=params,timeout=timeout)
+                
             elif request_type == 'post':
-                if para:
-                    req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,data=params,timeout=timeout)
-                elif jsn:
-                    req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,json=json,timeout=timeout)
-                else:
-                    req = requests.post(url=url, headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
-                    
+                req = requests.post(url=url,headers={'user-agent': user_agent},proxies=random_proxy_dict,data=data,json=json,files=files,timeout=timeout)
+            
+            elif request_type == 'put':
+                req = requests.put(url=url,headers={'user-agent': user_agent},proxies=random_proxy_dict,data=data,timeout=timeout)
+                
+            elif request_type == 'delete':
+                req = requests.delete(url=url,headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
+                
+            elif request_type == 'head':
+                req = requests.head(url=url,headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
+                
+            elif request_type == 'options':
+                req = requests.options(url=url,headers={'user-agent': user_agent},proxies=random_proxy_dict,timeout=timeout)
+            
             else:
                 raise ValueError("request_type must be 'get' or 'post' of type str")
                 
