@@ -12,13 +12,16 @@ The `undercover_request` module can be installed from GitHub using `pip`:
 import undercover_request
 ```
 
-@param url: the url from which the request object is wanted  (type str)  
-@param request_type: 'get' or 'post' request (type str)  
-@param params: parameters sent to the url (type dict())  
-@param json: parameters sent to the url, parsed to json (type dict())  
-@param timeout: function is waiting for a response for a given number of seconds (type int)   
-@param print_status: if True print status updates (boolean)  
-@return: returns a requests.Response instance from given url with random user agent and random proxy   
+@param url: the url string from which the request object is wanted (type str)  
+@param request_type: get, post, put, delete, head or options request (type str)  
+@param data: data sent to url per post or put request (type dict())  
+@param params: parameters added to the url query string per get request (type dict())  
+@param json: parameters sent to the url per post request,internally parsed to json (type dict())  
+@param files:  multipart-encoded file sent to the url per post request (type file object)  
+@param timeout: function is waiting for a response for a given number of seconds (type int)  
+@param print_status: if True print status updates (type bool)   
+@return: returns a requests.Response instance from given url, fetched with random user agent and random proxy    
+ 
 
 #### Example
 
