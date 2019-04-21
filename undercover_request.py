@@ -117,7 +117,8 @@ def request(url:str,request_type:str,data={},params={},json={},files={},timeout=
         except:
             #print('ERROR','Proxy:',random_proxy,'User Agent:',user_agent)
             if i == x:
-                print('All',i,'proxies are not reachable. Try again later')
+                print('Number of attempts: ' + str(i))
+                raise ConnectionRefusedError ('None of the proxies is reachable. Try again later')
                 req = None
                 break
             i += 1
