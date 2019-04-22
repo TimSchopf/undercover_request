@@ -54,9 +54,8 @@ SUCCESS [Number of attempts: 2] Proxy: {'ip': '167.99.7.198', 'port': '8080'} Us
 
 `proxylist = number of proxies on https://www.sslproxies.org/`  
 
-The module randomly tries a maximum of `x=len(proxylist)` proxies and then interrupts if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time.  
+The module randomly tries a maximum of `x=len(proxylist)` proxies and then throws a `ConnectionRefusedError`if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time.  
 
 In rare cases an IndexOutOfRangeException may occur. This happens if the website of the proxylist could not be reached.  If this is the case, the request can simply be restarted shortly afterwards.
 
 In very rare cases, if hosted cache server and sources of `fake-useragent` will be unavailable, you'll get a `Error occurred during loading data. Trying to use cache server https://fake-useragent.herokuapp.com/browsers/0.1.11`. Then `undercover_request` still works but uses the fallback user-agent `Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-HK) AppleWebKit/533.18.1 (KHTML, like Gecko) Version/5.0.2 Safari/533.18.5`  
-
