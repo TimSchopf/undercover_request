@@ -54,7 +54,7 @@ SUCCESS [Number of attempts: 2] Proxy: {'ip': '167.99.7.198', 'port': '8080'} Us
 
 `proxylist = number of proxies on https://www.sslproxies.org/`  
 
-The module randomly tries a maximum of `x=len(proxylist)` proxies and then throws a `ConnectionRefusedError`if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time.  
+The module randomly tries a maximum of `x=len(proxylist)` proxies and throws a `ConnectionRefusedError`if none of the servers is reachable to avoid an endless loop. If this is the case, the request can simply be restarted shortly afterwards. It can sometimes happen that the proxies are not reachable for a short time.  
 
 In rare cases an `IndexOutOfRangeError` may occur. This happens if the website of the proxylist could not be reached.  If this is the case, the request can simply be restarted shortly afterwards.
 
